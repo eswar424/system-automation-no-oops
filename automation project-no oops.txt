@@ -1,0 +1,91 @@
+import os
+from os import walk
+from re import search
+from threading import Thread
+import sys
+import time
+
+
+class Search_for_file:
+    def __init__(self, filename):
+        # self.path = path
+        self.filename = filename
+
+    def find_disk(self):
+        userDrive = input("which drive you want to open ? C or D or E: ")
+        if "C" in userDrive.upper():
+            os.startfile("C:")
+        elif "D" in userDrive.upper():
+            os.startfile("D:")
+        else:
+            print("enter correct drive name")
+
+    def list_Files(self):
+        mypath = "C:\\Users\\mekala.yuvae\\OneDrive - HCL Technologies Ltd\\Desktop\\cisco"
+        for (root, dirs, files) in os.walk(mypath, topdown=True):
+            print(root)
+            print(dirs)
+            print(files, '\n')
+
+    def find_File_ByPath(self):
+        paths = []
+        path = "C:\\Users\mekala.yuvae\\OneDrive - HCL Technologies Ltd\\Desktop\\cisco"
+        for root, dirs, files in os.walk(path):
+            if self.filename in files:
+                paths.append(os.path.join(root))
+        print(paths)
+
+    def getFilesFromFolder(self):
+        myPath = 'C:\\Users\mekala.yuvae\\OneDrive - HCL Technologies Ltd\\Desktop\\cisco'
+        listOfFiles = []
+        listOfFiles = os.listdir(myPath)
+        for eachFile in listOfFiles:
+            print(myPath + '\\' + str(eachFile))
+
+    def getFilesFromFolder2(folderName):
+        listOfFiles = []
+        listOfFiles = os.listdir(folderName)
+        for eachFile in listOfFiles:
+            print(folderName + '\\' + str(eachFile)) # Gloabl/Main Code:
+    path1= 'C:\\Users\mekala.yuvae\\OneDrive - HCL Technologies Ltd\\Desktop\\cisco'
+    Path2 = 'C:\\Users\\mekala.yuvae\\OneDrive - HCL Technologies Ltd\\Desktop\\jbc'
+    istofFiles1 = []
+    listofFiles2 = []
+    t1 = Thread(target=getFilesFromFolder2, args=(path1,))
+    t2 = Thread(target=getFilesFromFolder2, args=(Path2,))
+    t1.start()
+    t2.start()
+    t1.join()
+    t2.join()
+
+    print('Time taken to get files from 2 folders is ', time.time(), 'seconds')
+
+
+def exitprogram():
+    sys.exit("system exiting")
+
+
+def printerror():
+    print("Invalid option entered")
+
+
+def Filehandling():
+    filename = input("Enter a filename to search: ")
+    se = Search_for_file(filename)
+    menu = {
+        1: se.find_disk,
+        2: se.list_Files,
+        3: se.find_File_ByPath,
+        4: se.getFilesFromFolder,
+        5:se.getFilesFromFolder2,
+        6: exitprogram,
+    }
+
+    while True:
+        print("\n", end='')
+        choice = int(input())
+        menu.get(choice, printerror)()
+
+
+Filehandling()
+print(time.time())
